@@ -103,6 +103,11 @@ func main() {
 			reportErr(err, w)
 			return
 		}
+		un := strings.ToLower(ev.Username)
+		if un == botName || strings.Contains(un, "-bot") {
+			reportErr(err, w)
+			return
+		}
 
 		answer := ""
 		text := strings.ToLower(ev.Text)
@@ -118,7 +123,7 @@ func main() {
 			log.Println("strPirate:", strPirate)
 		}
 		if strAfter != "" {
-			answer = "Аудио: http://cdn.radio-t.com/rt" + strAfter + "post.mp3\\nЛог чата: http://chat.radio-t.com/logs/radio-t-" + strAfter + ".html"
+			answer = "[аудио](http://cdn.radio-t.com/rt" + strAfter + "post.mp3) ● [лог чата](http://chat.radio-t.com/logs/radio-t-" + strAfter + ".html) (но это не точно)"
 		} else if strPirate != "" {
 			answer = phrases[rand.Intn(phraseCnt)]
 		} else {

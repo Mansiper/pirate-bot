@@ -10,9 +10,9 @@ ignored_commands:
 
 test_cases:
   - command: "пираты №579"
-    result: "^Аудио: http:\/\/cdn\.radio-t\.com\/rt579post\.mp3\\\\nЛог чата: http:\/\/chat\.radio-t\.com\/logs\/radio-t-579\.html$"
+    result: "^\[аудио\]\(http:\/\/cdn\.radio-t\.com\/rt579post\.mp3\) ● \[лог чата\]\(http:\/\/chat\.radio-t\.com\/logs\/radio-t-579\.html\).*$"
   - command: "aftershow #1"
-    result: "^Аудио: http:\/\/cdn\.radio-t\.com\/rt1post\.mp3\\\\nЛог чата: http:\/\/chat\.radio-t\.com\/logs\/radio-t-1\.html$"
+    result: "^\[аудио\]\(http:\/\/cdn\.radio-t\.com\/rt1post\.mp3\) ● \[лог чата\]\(http:\/\/chat\.radio-t\.com\/logs\/radio-t-1\.html\).*$"
   - command: "тут спрятолось несколько пиратов"
     result: "^[\w].*$"
   - command: "found some pirates here"
