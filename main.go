@@ -11,6 +11,7 @@ import (
 	"regexp"
 	"strings"
 	"math/rand"
+	"net/url"
 )
 
 const (
@@ -62,7 +63,8 @@ func main() {
 
 	rand.Seed(time.Now().UnixNano())
 	reAfter := regexp.MustCompile(`(пираты|послешоу|pirates|aftershow)\s*[#№]?(\d+)`)
-	rePirate := regexp.MustCompile(`([^a-zA-Zа-яА-ЯёЁ]|^)(pirate(s|d)?|пират(ы|ов|а|у|е)?|с?пирати(ть|л|ла|ли|ло)?)([^a-zA-Zа-яА-ЯёЁ]|$)`)
+	rePirate := regexp.MustCompile(`([^a-zA-Zа-яА-ЯёЁ]|^)(pirate(ss?|d)?|пират(ы|ов|а|у|е|ка)?|с?пирати(ть|л|ла|ли|ло)?|пиратск(ий|ая|ие|ую|ое|им|их|ого|ими))([^a-zA-Zа-яА-ЯёЁ]|$)`)
+	reTorrent := regexp.MustCompile(`(torr?ent|торр?ент)\s*(.*)`)
 	reCptnJack := regexp.MustCompile(`(капитан\s*джек\s*воробей|captain\s*jack\s*sparrow)`)
 	reJack := regexp.MustCompile(`(джек\s*воробей|jack\s*sparrow)`)
 
@@ -109,21 +111,31 @@ func main() {
 			return
 		}
 
-		answer := ""
+		var answer, strTorrent, strAfter, strPirate string
 		text := strings.ToLower(ev.Text)
-		strAfter := ""
 		afterData := reAfter.FindStringSubmatch(text)
 		if len(afterData) >= 3 {
 			strAfter = afterData[2]
 			log.Println("strAfter:", strAfter)
+		} else {
+			torrentData := reTorrent.FindStringSubmatch(text)
+			if len(torrentData) >= 3 && torrentData[2] != "" {
+				link, _ := url.Parse("https://rutracker.org/forum/tracker.php")
+				params := url.Values{}
+				params.Add("nm", torrentData[2])
+				link.RawQuery = params.Encode()
+				strTorrent = link.String()
+				log.Println("strTorrent:", torrentData[2])
+			} else {
+				strPirate = rePirate.FindString(text)
+				log.Println("strPirate:", strPirate)
+			}
 		}
-		strPirate := ""
-		if strAfter == "" {
-			strPirate = rePirate.FindString(text)
-			log.Println("strPirate:", strPirate)
-		}
+
 		if strAfter != "" {
 			answer = "[аудио](http://cdn.radio-t.com/rt" + strAfter + "post.mp3) ● [лог чата](http://chat.radio-t.com/logs/radio-t-" + strAfter + ".html) (но это не точно)"
+		} else if strTorrent != "" {
+			answer = "Yo-ho-ho and find me [torrent](" + strTorrent + ")!"
 		} else if strPirate != "" {
 			answer = phrases[rand.Intn(phraseCnt)]
 		} else {
