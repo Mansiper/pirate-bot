@@ -1,0 +1,23 @@
+bot_name: "pirate-bot"
+
+bot_display_name: "pirate-bot"
+
+ignored_commands:
+  - "Случайный текст без упоминания п-и-р-а-т-о-в"
+  - "А послешоу сегодня будет?"
+  - "Капитан Джек Воробей"
+  - "Captain Jack Sparrow"
+
+test_cases:
+  - command: "пираты №579"
+    result: "^Аудио: http:\/\/cdn\.radio-t\.com\/rt579post\.mp3\\\\nЛог чата: http:\/\/chat\.radio-t\.com\/logs\/radio-t-579\.html$"
+  - command: "aftershow #1"
+    result: "^Аудио: http:\/\/cdn\.radio-t\.com\/rt1post\.mp3\\\\nЛог чата: http:\/\/chat\.radio-t\.com\/logs\/radio-t-1\.html$"
+  - command: "тут спрятолось несколько пиратов"
+    result: "^[\w].*$"
+  - command: "found some pirates here"
+    result: "^[\w].*$"
+  - command: "Джек Воробей?"
+    result: "^Капитан Джек Воробей!$"
+  - command: "Jack Sparrow"
+    result: "^Captain Jack Sparrow!$"
